@@ -1941,8 +1941,8 @@ body.modal-open { overflow: hidden; }
   }
 
   function actorRole() {
-    if (root.Cloud && root.Cloud.status && root.Cloud.status().role) {
-      return root.Cloud.status().role === 'admin' ? 'admin' : 'operator';
+    if (root.Cloud && typeof root.Cloud.status === 'function' && root.Cloud.status().role === 'operator') {
+      return 'operator';
     }
     var a = actor();
     var r = String((a && a.rol) || '').toLowerCase();
@@ -3893,7 +3893,7 @@ body.modal-open { overflow: hidden; }
     var logoutBtn = root.document.getElementById('footer-logout-btn');
     if (logoutBtn) logoutBtn.hidden = !cfg.token;
 
-    var activeRole = cfg.role || (S && S.actorRole ? S.actorRole() : 'admin');
+    var activeRole = (cfg.token && cfg.role === 'operator') ? 'operator' : (S && S.actorRole ? S.actorRole() : (cfg.role || 'admin'));
     var rolePill = root.document.getElementById('actor-role-pill');
     var actorSel = root.document.getElementById('actor-select');
     if (rolePill) {
@@ -4447,6 +4447,7 @@ body.modal-open { overflow: hidden; }
 
     // En modo autotest (?selftest=1), desbloquear para correr las pruebas automáticas
     if (/[?&]selftest=1/.test(root.location.search || '')) {
+      cfg.token = 'selftest-token';
       cfg.user = { email: 'elmer@castillorentcar.com', app_metadata: { erp_role: 'admin' } };
       cfg.role = 'admin';
       hideAuthGate();
@@ -4505,7 +4506,7 @@ body.modal-open { overflow: hidden; }
       enabled: cfg.enabled,
       url: cfg.url,
       user: cfg.user,
-      role: cfg.role || (S && S.actorRole ? S.actorRole() : 'admin'),
+      role: cfg.role || '',
       version: cfg.version,
       lastSync: cfg.lastSync,
       pending: cfg.pending,

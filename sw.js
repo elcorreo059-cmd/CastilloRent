@@ -1,6 +1,6 @@
 /* Castillo Rent Car ERP · Service Worker v3.5.1 */
 const VERSION = '3.5.1';
-const CACHE = 'castillo-erp-v' + VERSION;
+const CACHE = 'castillo-erp-v' + VERSION + '-r2';
 const CORE = [
   './',
   './index.html',
