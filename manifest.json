@@ -1,0 +1,29 @@
+{
+  "name": "Castillo Rent Car · ERP v3.5.1",
+  "short_name": "Castillo ERP",
+  "version": "3.5.1",
+  "description": "ERP de alquiler de vehículos: contratos, fianzas, vuelos, WhatsApp, finanzas y reportes.",
+  "lang": "es-DO",
+  "dir": "ltr",
+  "start_url": "./index.html?tab=dashboard",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "any",
+  "background_color": "#f3f5f9",
+  "theme_color": "#0b1220",
+  "categories": ["business", "productivity", "finance"],
+  "prefer_related_applications": false,
+  "icons": [
+    { "src": "icons/favicon.png", "sizes": "64x64", "type": "image/png", "purpose": "any" },
+    { "src": "icons/apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Nuevo contrato", "short_name": "Contrato", "url": "./index.html?tab=contratos", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Reportes", "short_name": "Reportes", "url": "./index.html?tab=reportes", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Calendario", "short_name": "Calendario", "url": "./index.html?tab=calendario", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
+  ]
+}
