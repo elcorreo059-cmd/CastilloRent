@@ -9,7 +9,8 @@
 <link rel="icon" type="image/png" sizes="64x64" href="icons/favicon.png">
 <link rel="shortcut icon" href="icons/favicon.png">
 <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
-<link rel="preload" as="image" href="icons/favicon.png">
+<link rel="preconnect" href="https://lpobazowgswimkptjwlp.supabase.co" crossorigin>
+<link rel="dns-prefetch" href="https://lpobazowgswimkptjwlp.supabase.co">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -4459,6 +4460,8 @@ body.modal-open { overflow: hidden; }
       return;
     }
 
+    hideAuthGate();
+    enforceActorRole();
     setStatus('connecting');
     (async function () {
       try {
@@ -8328,8 +8331,8 @@ body.modal-open { overflow: hidden; }
       '<button class="btn btn-primary" data-pwa-install data-act="pwa-install" hidden>' + U.icon('download') + ' Instalar app</button>' +
       '<button class="btn btn-outline" data-pwa-update data-act="pwa-update" hidden>' + U.icon('refresh') + ' Actualizar app</button>' +
       '<button class="btn btn-outline" data-act="pwa-persist">' + U.icon('shield') + ' Proteger datos</button></div>' +
-      '<div class="hint" style="margin-top:8px">Los datos siguen siendo de este dispositivo. Instalar la app no los sincroniza con otros equipos; para eso hace falta un backend.</div></div>' +
-      '<div class="settings-section"><h3>Almacenamiento</h3><p>Los datos viven en este navegador. Descarga un respaldo con frecuencia.</p>' +
+      '<div class="hint" style="margin-top:8px">Tus datos se sincronizan en tiempo real con Supabase entre celulares y computadoras, además de guardarse localmente para uso sin conexión.</div></div>' +
+      '<div class="settings-section"><h3>Almacenamiento</h3><p>Tus datos están respaldados en Supabase y en caché local. Puedes exportar o importar copias en JSON cuando quieras.</p>' +
       '<div class="grid g4" style="gap:10px">' +
       '<div class="kv"><span>Vehículos</span><strong>' + counts.flota + '</strong></div>' +
       '<div class="kv"><span>Contratos</span><strong>' + counts.contratos + '</strong></div>' +
@@ -9513,7 +9516,7 @@ body.modal-open { overflow: hidden; }
         '<div class="kv"><span>1</span><strong>Toca el botón Compartir</strong></div>' +
         '<div class="kv"><span>2</span><strong>Elige “Añadir a pantalla de inicio”</strong></div>' +
         '<div class="kv"><span>3</span><strong>Confirma “Añadir”</strong></div>' +
-        '<div class="hint">Quedará como una app. Los datos siguen guardados en este dispositivo, no se sincronizan con otros.</div>' +
+        '<div class="hint">Quedará instalada como una app nativa y tus datos se sincronizan automáticamente con Supabase.</div>' +
         '</div>',
       footer: '<button class="btn btn-primary" data-act="close-modal">Entendido</button>'
     });
@@ -9726,6 +9729,11 @@ body.modal-open { overflow: hidden; }
         rv.vehiculoId = t.value;
         S.setUI({ reportes: rv });
       } else if (t.id === 'import-file') {
+        if (!S.isAdmin()) {
+          U.toast('Permiso denegado: solo un Administrador puede restaurar respaldos JSON.', 'error', 'Control de rol');
+          t.value = '';
+          return;
+        }
         var file = t.files && t.files[0];
         if (!file) return;
         var reader = new FileReader();
@@ -9864,9 +9872,9 @@ body.modal-open { overflow: hidden; }
         syncTimer = setTimeout(function () { I.syncBridge(); }, 3000);
       }
     });
-    U.renderNow();
     if (root.PWA) { try { root.PWA.init(); } catch (e) { console.error(e); } }
     if (root.Cloud) { try { root.Cloud.init(); } catch (e) { console.error(e); } }
+    U.renderNow();
     if (I.bridgeReady()) setTimeout(function () { I.syncBridge(); }, 1800);
 
     var st = S.storageStatus();
